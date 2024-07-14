@@ -13,10 +13,10 @@ const GodotGame = () => {
   return (
     <iframe
       ref={iframeRef}
-      src="/docs/index.html"
+      src="/index.html"
       title="Godot Game"
-      width="800"
-      height="600"
+      width="1400"
+      height="680"
       style={{ border: 'none' }}
     />
   );
