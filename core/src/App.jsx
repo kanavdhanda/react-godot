@@ -1,13 +1,13 @@
-
+import React from 'react';
+import GodotGame from './godot';
 
 function App() {
-
-
   return (
-    <>
-      <h1>React game thing testing</h1>
-    </>
-  )
+    <div className="App">
+      <h1>My React App with Godot Game</h1>
+      <GodotGame />
+    </div>
+  );
 }
 
-export default App
+export default App;
