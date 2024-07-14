@@ -647,6 +647,19 @@ export default function Godot() {
             "focusCanvas": true,
             "gdextensionLibs": [],
         };
+
+                const loadPck = async () => {
+            try {
+                const response = await fetch(`/index.pck?cache-bust=${new Date().getTime()}`);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                // const arrayBuffer = await response.arrayBuffer();
+                GODOT_CONFIG.mainPack = `/index.pck?cache-bust=${new Date().getTime()}`
+                return true;
+            } catch (e) {
+                console.error('Failed to load .pck file:', e);
+                return false;
+            }
+        };
         
 
     
@@ -657,12 +670,6 @@ export default function Godot() {
                 return;
             }
             console.log('Engine found, creating instance...');
-            // let engine;
-            setTimeout(() => {setStatusMode('indeterminate')
-                
-            //  engine = new window.Engine(GODOT_CONFIG);
-
-            }, 1000);
             const engine = new window.Engine(GODOT_CONFIG);
             console.log('Engine instance created, starting game...');
     
@@ -778,7 +785,28 @@ export default function Godot() {
             }
         };
 
-        initGame();
+        // initGame();
+                if (document.readyState === 'complete') {
+            console.log('Document ready, initializing game immediately');
+            loadPck().then(success => {
+                if (success) {
+                    initGame();
+                } else {
+                    console.error('Failed to load .pck file after multiple attempts.');
+                }
+            });
+        } else {
+            console.log('Document not ready, waiting for load event');
+            window.addEventListener('load', () => {
+                loadPck().then(success => {
+                    if (success) {
+                        initGame();
+                    } else {
+                        console.error('Failed to load .pck file after multiple attempts.');
+                    }
+                });
+            });
+        }
         
     }, []);
     
