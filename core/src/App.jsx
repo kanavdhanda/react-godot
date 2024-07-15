@@ -1,68 +1,41 @@
-import { useState, useEffect } from "react";
-import Godot from "./godot";
-import "./App.css";
-import { BrowserRouter as Router, Route, Routes, useNavigate, useLocation } from 'react-router-dom';
+import { games } from './gdConfig';
+import GGen from './godot2';
+import React, { useState, useEffect, useRef } from 'react';
+import './App.css';
 
-function GameWrapper() {
-  const [gameInitialized, setGameInitialized] = useState(false);
-  const location = useLocation();
+export default function App() {
+  const [gameIndex, setGameIndex] = useState(0);
+  const [key, setKey] = useState(0);
+  const ggenRef = useRef(null);
 
-  useEffect(() => {
-    if (!gameInitialized) {
-      setGameInitialized(true);
-    }
-  }, []);
-
-  const isGameRoute = location.pathname === "/game";
-
-  return (
-    <div className={`game-area ${isGameRoute ? 'visible' : 'hidden'}`}>
-      {gameInitialized && <Godot width={500} height={500} />}
-    </div>
-  );
-}
-
-function Navigation() {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const toggleGameVisibility = () => {
-    if (location.pathname === "/game") {
-      navigate("/");
-    } else {
-      navigate("/game");
-    }
+  const btnPress = () => {
+    setGameIndex((prevIndex) => (prevIndex + 1) % games.length);
+    setKey((prevKey) => prevKey + 1);
   };
 
+  useEffect(() => {
+    if (ggenRef.current && ggenRef.current.resetGame) {
+      ggenRef.current.resetGame();
+    }
+  }, [gameIndex]);
+
   return (
-    <div className="navigation">
-      <button onClick={toggleGameVisibility} className="toggle-button">
-        {location.pathname === "/game" ? "Hide Game" : "Show Game"}
-      </button>
+    <div className="app-container">
+      <div className="z-30 bg-black opacity-45 text-white">
+        <h1 className="app-title">Godot Games</h1>
+        <button className="w-10 h-10 hover:cursor-pointer" onClick={btnPress}>
+          Change Game
+        </button>
+      </div>
+      <div className="game-list">
+        <div className="game-item">
+          <GGen 
+            key={key} 
+            ref={ggenRef}
+            gdConfig={games[gameIndex]} 
+          />
+        </div>
+      </div>
     </div>
   );
 }
-
-function App() {
-  return (
-    <Router>
-      <div className="app-container">
-        <Navigation />
-        <GameWrapper />
-        <Routes>
-          <Route path="/game" element={
-            <h1 className="app-title">React Game Thing Testing</h1>
-          } />
-          <Route path="/" element={
-            <div className="home-content">
-              <h1>Home</h1>
-              <p>Welcome to the home page. Click "Show Game" to play.</p>
-            </div>
-          } />
-        </Routes>
-      </div>
-    </Router>
-  );
-}
-
-export default App;
