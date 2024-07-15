@@ -1,24 +1,38 @@
-import {useState } from "react"
-import Godot from "./godot"
+import { useState, useEffect } from "react";
+import Godot from "./godot";
+import "./App.css";
+
 function App() {
-  // const [state, setState] = useState(false)
-  // const buttonClick = () => {
-  //     setState(true)
-  // }
+  const [gameInitialized, setGameInitialized] = useState(false);
+  const [gameVisible, setGameVisible] = useState(false);
+
+  useEffect(() => {
+    // Initialize the game only once
+    if (!gameInitialized) {
+      setGameInitialized(true);
+    }
+  }, []);
+
+  const toggleGameVisibility = () => {
+    setGameVisible(!gameVisible);
+  };
 
   return (
-    <>
-    <div className="relative">
-    <h1 className="absolte top-0 left-0">React game thing testing</h1>
-    {/* <button onClick={buttonClick}>Click me to play the game</button> */}
-    <Godot className="h-[500px] w-[500px]"/>
-
-{/* {state && (
-)} */}
-    </div>
+    <div className="app-container flex h-[100%] w-[100%] items-center justify-center flex-col">
+      <div className="game-area" style={{ display: gameVisible ? 'block' : 'none' }}>
+        <h1 className="app-title">React Game Thing Testing</h1>
+        {gameInitialized && <Godot width={500} height={500} />}
+      </div>
       
-    </>
-  )
+      <button onClick={toggleGameVisibility} className="toggle-button">
+        {gameVisible ? "Hide Game" : "Show Game"}
+      </button>
+      
+      <div className="other-content">
+        <p>This is other content that should coexist with the game.</p>
+      </div>
+    </div>
+  );
 }
 
-export default App
+export default App;

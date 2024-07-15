@@ -1,0 +1,32 @@
+.app-container {
+    position: relative;
+  }
+  
+  .game-area {
+    position: relative;
+    width: 500px;
+    height: 500px;
+    margin: 0 auto;
+  }
+  
+  .app-title {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 10;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 5px 10px;
+    margin: 0;
+    font-size: 18px;
+  }
+  
+  .toggle-button {
+    display: block;
+    margin: 10px auto;
+  }
+  
+  .other-content {
+    margin-top: 20px;
+    text-align: center;
+  }
