@@ -1,37 +1,67 @@
 import { useState, useEffect } from "react";
 import Godot from "./godot";
 import "./App.css";
+import { BrowserRouter as Router, Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 
-function App() {
+function GameWrapper() {
   const [gameInitialized, setGameInitialized] = useState(false);
-  const [gameVisible, setGameVisible] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
-    // Initialize the game only once
     if (!gameInitialized) {
       setGameInitialized(true);
     }
   }, []);
 
+  const isGameRoute = location.pathname === "/game";
+
+  return (
+    <div className={`game-area ${isGameRoute ? 'visible' : 'hidden'}`}>
+      {gameInitialized && <Godot width={500} height={500} />}
+    </div>
+  );
+}
+
+function Navigation() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const toggleGameVisibility = () => {
-    setGameVisible(!gameVisible);
+    if (location.pathname === "/game") {
+      navigate("/");
+    } else {
+      navigate("/game");
+    }
   };
 
   return (
-    <div className="app-container flex h-[100%] w-[100%] items-center justify-center flex-col">
-      <div className="game-area" style={{ display: gameVisible ? 'block' : 'none' }}>
-        <h1 className="app-title">React Game Thing Testing</h1>
-        {gameInitialized && <Godot width={500} height={500} />}
-      </div>
-      
+    <div className="navigation">
       <button onClick={toggleGameVisibility} className="toggle-button">
-        {gameVisible ? "Hide Game" : "Show Game"}
+        {location.pathname === "/game" ? "Hide Game" : "Show Game"}
       </button>
-      
-      <div className="other-content">
-        <p>This is other content that should coexist with the game.</p>
-      </div>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <div className="app-container">
+        <Navigation />
+        <GameWrapper />
+        <Routes>
+          <Route path="/game" element={
+            <h1 className="app-title">React Game Thing Testing</h1>
+          } />
+          <Route path="/" element={
+            <div className="home-content">
+              <h1>Home</h1>
+              <p>Welcome to the home page. Click "Show Game" to play.</p>
+            </div>
+          } />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
