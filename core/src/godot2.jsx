@@ -18,19 +18,20 @@ export default function GGen(props){
     //     [`/${GODOT_CONFIG.executable}.wasm`]: preloadedWasmFile,
     //     // Add any other preloaded files here
     // };
-    GODOT_CONFIG.mainPack = `/${GODOT_CONFIG.executable}.pck?cache-bust=${new Date().getTime()}`
-    GODOT_CONFIG.wasmFile =`/${GODOT_CONFIG.executable}.wasm?cache-bust=${new Date().getTime()}`
-    // const loadPck = async () => {   
-    //     try{
-    //         const response = await fetch(`/${GODOT_CONFIG.executable}.pck?cache-bust=${new Date().getTime()}`);
-    //         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    //             GODOT_CONFIG.mainPack = `/${GODOT_CONFIG.executable}.pck?cache-bust=${new Date().getTime()}`
-    //             return true;
-    //         } catch (e) {
-    //             console.error('Failed to load .pck file:', e);
-    //             return false;
-    //         }
-    //     }
+    // GODOT_CONFIG.mainPack = `/${GODOT_CONFIG.executable}.pck?cache-bust=${new Date().getTime()}`
+    // GODOT_CONFIG.wasmFile =`/${GODOT_CONFIG.executable}.wasm?cache-bust=${new Date().getTime()}`
+    const loadPck = async () => {   
+        // try{
+        //     // const response = await fetch(`/${GODOT_CONFIG.executable}.pck?cache-bust=${new Date().getTime()}`);
+        //     // if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        //     //     GODOT_CONFIG.mainPack = `${GODOT_CONFIG.executable}.pck?cache-bust=${new Date().getTime()}`
+        //         return true;
+        //     } catch (e) {
+        //         console.error('Failed to load .pck file:', e);
+        //         return false;
+        //     }
+        return true;
+        }
         const initGame = async (retryCount = 3) => {
             // if (engineRef.current) {
             //     console.log('Game already initialized');
@@ -121,11 +122,11 @@ export default function GGen(props){
                 initializing = false;
             }
 
-            const missing = window.Engine.getMissingFeatures();
-            if (missing.length !== 0) {
-                const missingMsg = 'Error\nThe following features required to run Godot projects on the Web are missing:\n';
-                displayFailureNotice(missingMsg + missing.join('\n'));
-            } else {
+            // const missing = window.Engine.getMissingFeatures();
+            // if (missing.length !== 0) {
+            //     const missingMsg = 'Error\nThe following features required to run Godot projects on the Web are missing:\n';
+            //     displayFailureNotice(missingMsg + missing.join('\n'));
+            // } else {
                 setStatusMode('indeterminate');
                 engine.startGame({
                     'onProgress': function (current, total) {
@@ -156,32 +157,32 @@ export default function GGen(props){
                         displayFailureNotice(err);
                     }
                 });
-            }
+            // }
         };
 
 
-        //         if (document.readyState === 'complete') {
-        //     console.log('Document ready, initializing game immediately');
-        //     loadPck().then(success => {
-        //         if (success) {
-        //             initGame();
-        //         } else {
-        //             console.error('Failed to load .pck file after multiple attempts.');
-        //         }
-        //     });
-        // } else {
-        //     console.log('Document not ready, waiting for load event');
-        //     window.addEventListener('load', () => {
-        //         loadPck().then(success => {
-        //             if (success) {
-        //                 initGame();
-        //             } else {
-        //                 console.error('Failed to load .pck file after multiple attempts.');
-        //             }
-        //         });
-        //     });
-        // }
-        initGame();
+                if (document.readyState === 'complete') {
+            console.log('Document ready, initializing game immediately');
+            loadPck().then(success => {
+                if (success) {
+                    initGame();
+                } else {
+                    console.error('Failed to load .pck file after multiple attempts.');
+                }
+            });
+        } else {
+            console.log('Document not ready, waiting for load event');
+            window.addEventListener('load', () => {
+                loadPck().then(success => {
+                    if (success) {
+                        initGame();
+                    } else {
+                        console.error('Failed to load .pck file after multiple attempts.');
+                    }
+                });
+            });
+        }
+
         // return () => {
         //     if (engineRef.current) {
         //         console.log('Cleaning up Godot engine');

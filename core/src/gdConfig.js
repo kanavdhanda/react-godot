@@ -1,26 +1,51 @@
 const games = [
-    {
-        name: "Game Instance 1",
-        args: [],
-        canvasResizePolicy: 0,
-        executable: "index",
-        experimentalVK: true,
-        fileSizes: { "index.pck": 26189216, "index.wasm": 49282035 },
-        focusCanvas: true,
-        gdextensionLibs: [],
-        packfile: "index"
-    },
-    {
-        name: "Game Instance 2",
-        args: [],
-        canvasResizePolicy: 2,
-        executable: "index",
-        experimentalVK: true,
-        fileSizes: { "index.pck": 26189216, "index.wasm": 49282035 },
-        focusCanvas: true,
-        gdextensionLibs: [],
-        packfile: "index"
-    }
+  {
+    name: "Game Instance 1",
+    args: [],
+    canvasResizePolicy: 2,
+    executable: "Game",
+    experimentalVK: true,
+    fileSizes: { "Game.pck": 22994432, "Game.wasm": 35708238 },
+    focusCanvas: true,
+    gdextensionLibs: [],
+    serviceWorker: "Game.service.worker.js",
+    packfile: "Game",
+  },
+  {
+    name: "Game Instance 2",
+    args: [],
+    canvasResizePolicy: 0,
+    executable: "Game",
+    experimentalVK: true,
+    fileSizes: { "Game.pck": 22994432, "Game.wasm": 35708238 },
+    focusCanvas: true,
+    gdextensionLibs: [],
+    serviceWorker: "Game.service.worker.js",
+    packfile: "Game",
+  },
+
+  {
+    name: "Game Instance 3",
+    args: [],
+    canvasResizePolicy: 0,
+    executable: "index",
+    experimentalVK: true,
+    fileSizes: { "index.pck": 26189216, "index.wasm": 49282035 },
+    focusCanvas: true,
+    gdextensionLibs: [],
+    packfile: "index",
+  },
+  {
+    name: "Game Instance 4",
+    args: [],
+    canvasResizePolicy: 2,
+    executable: "index",
+    experimentalVK: true,
+    fileSizes: { "index.pck": 26189216, "index.wasm": 49282035 },
+    focusCanvas: true,
+    gdextensionLibs: [],
+    packfile: "index",
+  },
 ];
 
 export { games };
